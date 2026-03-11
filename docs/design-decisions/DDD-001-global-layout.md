@@ -221,8 +221,8 @@ The semantic page skeleton after EDS decoration. Comments show which width const
       </div>
 
     </div>
-    <!-- Outer section div: constrained to --layout-max (1200px) -->
-    <!-- padding: --content-padding-* at each breakpoint -->
+    <!-- Each .section > div constrained to --layout-max (1200px) -->
+    <!-- with padding: --content-padding-* at each breakpoint -->
 
     <div class="section">
       <div class="default-content-wrapper">
@@ -275,6 +275,8 @@ All `var(--background-color)`, `var(--light-color)`, etc. references in `styles.
 
 The outer tier caps all content within 1200px. The inner tier constrains reading content to a comfortable line length.
 
+> **Implementation prerequisite:** The proposed tokens `--layout-max` and `--content-padding-tablet` must be added to `tokens.css` before these rules take effect. Without them, custom properties resolve to `initial` and constraints silently disappear.
+
 ```css
 /* Outer tier: layout max on every section container */
 main > .section > div {
@@ -298,7 +300,7 @@ main > .section > div {
 /* Inner tier: reading width on default content */
 main > .section > .default-content-wrapper {
   max-width: var(--measure);
-  /* inherits margin-inline: auto from parent centering */
+  margin-inline: auto;
 }
 ```
 
@@ -312,7 +314,7 @@ main > .section {
 }
 
 main > .section:first-of-type {
-  margin-top: 0;
+  margin-block-start: 0;
 }
 ```
 

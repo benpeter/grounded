@@ -8,6 +8,9 @@ helix-importer-ui
 *.bak
 .idea
 
+# Claude Code local config (not committed)
+CLAUDE.local.md
+
 # Ensure these files are tracked
 !CLAUDE.md
 !AGENTS.md

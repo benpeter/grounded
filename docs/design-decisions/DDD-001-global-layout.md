@@ -1,6 +1,6 @@
 # DDD-001: Global Layout
 
-Status: **Approved**
+Status: **Implemented**
 
 ## Context
 
@@ -369,3 +369,5 @@ main > .section:first-of-type {
 ### Reviewer Notes
 
 Approved 2026-03-12. Proceed to implementation.
+
+Implemented 2026-03-12. CSS contract shipped in branch `nefario/implement-ddd-001-global-layout-css`.

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>DDD-001 Layout Test</title>
+</head>
+<body>
+  <header></header>
+  <main>
+    <!-- Section 1: Reading width verification -->
+    <!-- NOTE: At 375px mobile viewport (20px padding), content column is ~335px (~37-40 chars/line).
+         This is below the 45-char comfortable minimum. Known issue, deferred to DDD-005/006. -->
+    <div>
+      <h1>Layout Test Page</h1>
+      <p>A paragraph of sufficient length to verify reading width constraint.
+         This text should wrap within the --measure (68ch) column at desktop
+         widths and fill the viewport minus padding at mobile widths. The
+         comfortable reading width is approximately 550-612px depending on
+         font size. Adding more text here to ensure the paragraph is long
+         enough to demonstrate line wrapping behavior at various viewport
+         widths from narrow mobile to wide desktop screens.</p>
+      <p>Second paragraph to verify spacing between consecutive paragraphs
+         within a section. The gap should be governed by vertical rhythm
+         tokens when those are implemented in DDD-005/006.</p>
+    </div>
+
+    <!-- Section 2: Code block escape hatch — long line must scroll, not clip -->
+    <div>
+      <h2>Code Block Overflow Test</h2>
+      <p>The following code block contains a very long line that should
+         scroll horizontally, not be clipped by the reading-width constraint.</p>
+      <pre><code>const veryLongVariableName = someFunction(argumentOne, argumentTwo, argumentThree, argumentFour, argumentFive, argumentSix, argumentSeven) // This line is intentionally very long to test horizontal scrolling behavior within the default-content-wrapper constraint</code></pre>
+      <p>Text after the code block should return to normal reading width.</p>
+    </div>
+
+    <!-- Section 3: Mixed content for spacing verification -->
+    <div>
+      <h2>Element Spacing Test</h2>
+      <p>Paragraph before a list.</p>
+      <ul>
+        <li>List item one</li>
+        <li>List item two</li>
+        <li>List item three</li>
+      </ul>
+      <p>Paragraph after a list, testing element gap.</p>
+      <h3>Subheading Within Section</h3>
+      <p>Content under a subheading to verify heading asymmetric spacing
+         (more space above heading than below).</p>
+    </div>
+
+    <!-- Section 4: Two-tier geometry demonstration -->
+    <!-- This section shows both tiers: reading text (inner measure) sits within
+         a section container that extends to --layout-max (outer tier).
+         The two-tier relationship becomes visible when a wide block (image, card grid)
+         is placed here — the reading column is centered and narrower than the container. -->
+    <div>
+      <h2>Two-Tier Layout Demonstration</h2>
+      <p>This paragraph should be constrained to --measure (68ch) for comfortable
+         reading. Notice it is narrower than the section container above and below.</p>
+      <p>The section container (outer tier) extends to --layout-max (1200px),
+         which becomes visible when a full-width block like an image or card
+         grid is placed here. The reading column (inner tier) is --measure (68ch),
+         centered within the outer container.</p>
+    </div>
+
+    <!-- Section 5: Short content (simulates TIL post) -->
+    <div>
+      <h2>Short Section</h2>
+      <p>A single short paragraph to verify section spacing does not create
+         excessive gaps for brief content.</p>
+    </div>
+  </main>
+  <footer></footer>
+</body>
+</html>

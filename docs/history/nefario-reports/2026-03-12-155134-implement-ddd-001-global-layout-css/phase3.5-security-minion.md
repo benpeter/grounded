@@ -1,0 +1,9 @@
+ADVISE
+
+- [security]: The CSP meta tag in `head.html` defines `script-src` only — there is no `style-src` directive, meaning stylesheets are unrestricted by policy. This is a pre-existing gap; Task 2 touches `head.html` and is the natural place to note it, but the plan does not introduce it.
+  SCOPE: `head.html` — Content-Security-Policy meta tag
+  CHANGE: Add `style-src 'self';` to the CSP directive alongside the existing `script-src`. The new `tokens.css` link and the existing `styles.css` link are both same-origin, so `'self'` covers them without any relaxation needed.
+  WHY: Without a `style-src` directive the browser permits stylesheets from any origin. An XSS that injects a `<link>` tag (or a compromised CDN response) can load an attacker-controlled stylesheet, enabling CSS-based data exfiltration (e.g., attribute selectors reading input values, `url()` beaconing). Adding `style-src 'self'` closes this vector at zero cost since both stylesheets are already same-origin. This is a hardening advisory against a pre-existing gap surfaced by the fact that Task 2 is already editing `head.html`.
+  TASK: Task 2
+
+No other security concerns. The `<link>` tag uses an absolute same-origin path consistent with the existing `styles.css` pattern. All token values are static literals (hex, px, ch, em, unitless numbers, font stack strings) with no user-supplied content, no `url()` fetches, and no `attr()` references. No new external dependencies or supply chain surface is introduced. The `drafts/layout-test.html` test file contains only static markup with no scripts or inline event handlers and is excluded from production serving by EDS conventions. The CSS selector surface introduced in Phase C (`.section.light`, `.section.highlight`, `.default-content-wrapper`) is purely structural with no user-controlled class injection path.

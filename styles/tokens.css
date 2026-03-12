@@ -2,7 +2,7 @@
  * Design Tokens — Mostly Hallucinations
  *
  * Single source of truth for colors, typography, and spacing.
- * Import this at the top of styles.css: @import url('tokens.css');
+ * Loaded via <link> in head.html before styles.css.
  *
  * Aesthetic principle: warm white dominates. Green and gold are quiet guests.
  * Borders and rules almost melt into the background.
@@ -65,6 +65,10 @@
   --section-spacing: 48px;
   --content-padding-mobile: 20px;
   --content-padding-desktop: 32px;
+  --layout-max: 1200px;
+  --content-padding-tablet: 24px;
+  --space-paragraph: 1em;
+  --space-element: 1.5em;
 }
 
 /* --- Dark Mode --- */
@@ -74,14 +78,11 @@
     --color-background: #3A3A33;
     --color-background-soft: #3F5232;
     --color-background-tinted: #3F5232;
-
     --color-text: #F6F4EE;
     --color-text-muted: #C9C3B8;
-
     --color-heading: #F6F4EE;
     --color-link: #9FB68A;            /* Light sage — 5.3:1 contrast on dark bg */
     --color-link-hover: #F6F4EE;
-
     --color-border: #5F7846;
     --color-border-subtle: #4A4A42;
 
@@ -91,12 +92,11 @@
 
 /* --- Desktop adjustments --- */
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   :root {
     --body-font-size-m: 18px;
     --body-font-size-s: 16px;
     --body-font-size-xs: 14px;
-
     --heading-font-size-xxl: 42px;
     --heading-font-size-xl: 32px;
     --heading-font-size-l: 26px;

@@ -59,6 +59,20 @@ Do not build these unless explicitly asked:
 - No external dependencies beyond Google Fonts (Source Sans 3, Source Code Pro, Source Serif 4)
 - Follow EDS three-phase loading: eager → lazy → delayed
 
+## Pull Requests
+
+Every PR that changes code served by EDS (JS, CSS, HTML, blocks) **must** include preview links in the description:
+
+```
+Test URLs:
+- Before: https://main--mostly-hallucinations--benpeter.aem.page/
+- After: https://<branch>--mostly-hallucinations--benpeter.aem.page/<path>
+```
+
+The `<path>` should point to a page that demonstrates the change. This is required by the EDS review process and the PR template.
+
+**Docs-only PRs** (markdown, design decisions, reports) are exempt — `.hlxignore` excludes `*.md` from EDS serving, so there's no preview page to link.
+
 ## Accessibility
 
 - WCAG 2.2 AA compliance

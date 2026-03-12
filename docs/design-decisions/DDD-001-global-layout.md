@@ -1,6 +1,6 @@
 # DDD-001: Global Layout
 
-Status: **Proposal**
+Status: **Approved**
 
 ## Context
 
@@ -362,10 +362,10 @@ main > .section:first-of-type {
 
 ## Decision
 
-- [ ] Approved
+- [x] Approved
 - [ ] Approved with changes
 - [ ] Rejected
 
 ### Reviewer Notes
 
-_Human writes here during review_
+Approved 2026-03-12. Proceed to implementation.

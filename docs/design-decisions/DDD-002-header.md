@@ -61,36 +61,36 @@ The header scrolls with the page (`position: relative` at all breakpoints). It i
 **Mobile (< 600px)**
 
 ```
-+--------------------------------------------+
-| <-- viewport --------------------------->  |
-|                                            |
-| <20px>                           <20px>    |
-|        Mostly                              |
-|        Hallucinations                      |
-|        Generated, meet grounded.           |
-|                                            |
-|        --content-padding-mobile (20px)     |
-|............................................|
-|        1px --color-border-subtle           |
-+--------------------------------------------+
++-------------------------------------------------+
+| <-- viewport -------------------------------->  |
+|                                                 |
+| <20px>                              <20px>      |
+|        Mostly                                   |
+|        Hallucinations                           |
+|        Generated, meet grounded.                |
+|                                                 |
+|        --content-padding-mobile (20px)          |
+|.................................................|
+|        1px --color-border-subtle                |
++-------------------------------------------------+
 ```
 
 **Desktop (>= 900px)**
 
 ```
-+------------------------------------------------------------------------+
-| <-- viewport (900px+) -----------------------------------------------> |
-|                                                                        |
-|   <32px>                                                    <32px>     |
-|          Mostly                                                        |
-|          Hallucinations                                                |
-|          Generated, meet grounded.                                     |
-|                                                                        |
-|          --content-padding-desktop (32px)                              |
-|          max-width: --layout-max (1200px), centered                    |
-|........................................................................|
-|          1px --color-border-subtle                                     |
-+------------------------------------------------------------------------+
++----------------------------------------------------------------------+
+| <-- viewport (900px+) ---------------------------------------------> |
+|                                                                      |
+| <32px>                                                    <32px>     |
+|        Mostly                                                        |
+|        Hallucinations                                                |
+|        Generated, meet grounded.                                     |
+|                                                                      |
+|        --content-padding-desktop (32px)                              |
+|        max-width: --layout-max (1200px), centered                    |
+|......................................................................|
+|        1px --color-border-subtle                                     |
++----------------------------------------------------------------------+
 ```
 
 ### Typography
@@ -98,7 +98,7 @@ The header scrolls with the page (`position: relative` at all breakpoints). It i
 | Element | Font | Weight | Size Strategy | Color | Line-height |
 |---|---|---|---|---|---|
 | "Mostly" | `--font-heading` (Source Code Pro) | 400 (regular) | ~55-60% of "Hallucinations" size. Fluid via `clamp()`. | `--color-heading` | `--line-height-heading` (1.25) |
-| "Hallucinations" | `--font-heading` (Source Code Pro) | 600 (semibold) | `clamp(28px, 8vw, 42px)`. At 900px+ the max (42px) aligns with `--heading-font-size-xxl` at desktop. At mobile widths, 8vw on a 375px viewport yields ~30px. | `--color-heading` | `--line-height-heading` (1.25) |
+| "Hallucinations" | `--font-heading` (Source Code Pro) | 600 (semibold) | `clamp(28px, 8vw, 42px)`. The 42px max matches the `width >= 900px` override of `--heading-font-size-xxl` (base value 48px, desktop value 42px). At mobile widths, 8vw on a 375px viewport yields ~30px. | `--color-heading` | `--line-height-heading` (1.25) |
 | Tagline | `--font-editorial` (Source Serif 4) | 400 italic | `--body-font-size-xs` (15px mobile / 14px desktop) | `--color-text-muted` | 1.4 |
 
 **Rationale for size choices:**

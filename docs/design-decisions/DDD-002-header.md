@@ -1,6 +1,6 @@
 # DDD-002: Header
 
-Status: **Proposal**
+Status: **Approved**
 
 ## Context
 
@@ -299,10 +299,10 @@ All tokens exist in `styles/tokens.css`. No new tokens proposed.
 
 ## Decision
 
-- [ ] Approved
+- [x] Approved
 - [ ] Approved with changes
 - [ ] Rejected
 
 ### Reviewer Notes
 
-_{Human writes here during review}_
+Approved 2026-03-12.

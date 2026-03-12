@@ -32,6 +32,7 @@ The repository provides the basic structure, blocks, and configuration needed to
         ├── {blockname}.js      # Block's JavaScript
         └── {blockname}.css     # Block's styles
 ├── styles/          # Global styles and CSS
+    ├── tokens.css          # Design tokens (loaded first -- must precede styles.css in head.html)
     ├── styles.css          # Minimal global styling and layout for your website required for LCP
     ├── lazy-styles.css     # Additional global styling and layout for below the fold/post LCP content
     └── fonts.css           # Font definitions
@@ -57,7 +58,7 @@ The repository provides the basic structure, blocks, and configuration needed to
 - Follow Stylelint standard configuration
 - Use modern CSS features (CSS Grid, Flexbox, CSS Custom Properties)
 - Maintain responsive design principles
-  - Declare styles mobile first, use `min-width` media queries at 600px/900px/1200px for tablet and desktop
+  - Declare styles mobile first, use range notation media queries (`width >= 600px`, `width >= 900px`, `width >= 1200px`) for tablet and desktop. Note: `stylelint-config-standard` v40 enforces range notation — `min-width` syntax will fail lint.
 - Ensure all selectors are scoped to the block.
   - Bad: `.item-list`
   - Good: `.{blockname} .item-list`   

@@ -1,4 +1,4 @@
-# CLAUDE.md — Mostly Hallucinations
+# CLAUDE.md — Grounded
 
 See @AGENTS.md for EDS development conventions, project structure, and deployment workflow.
 
@@ -65,8 +65,8 @@ Every PR that changes code served by EDS (JS, CSS, HTML, blocks) **must** includ
 
 ```
 Test URLs:
-- Before: https://main--mostly-hallucinations--benpeter.aem.page/
-- After: https://<branch>--mostly-hallucinations--benpeter.aem.page/<path>
+- Before: https://main--grounded--benpeter.aem.page/
+- After: https://<branch>--grounded--benpeter.aem.page/<path>
 ```
 
 The `<path>` should point to a page that demonstrates the change. This is required by the EDS review process and the PR template.

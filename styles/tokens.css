@@ -1,0 +1,107 @@
+/*
+ * Design Tokens — Mostly Hallucinations
+ *
+ * Single source of truth for colors, typography, and spacing.
+ * Import this at the top of styles.css: @import url('tokens.css');
+ *
+ * Aesthetic principle: warm white dominates. Green and gold are quiet guests.
+ * Borders and rules almost melt into the background.
+ * Gold appears once per screen at most.
+ */
+
+:root {
+  /* --- Colors: Light Mode (default) --- */
+
+  /* Backgrounds */
+  --color-background: #F6F4EE;        /* Page background — warm white, the dominant color */
+  --color-background-soft: #EFE9DD;   /* Code blocks, subtle surfaces — barely distinguishable from background */
+  --color-background-tinted: #9FB68A; /* Rare: highlights, light green tint */
+
+  /* Text */
+  --color-text: #3A3A33;              /* Body text */
+  --color-text-muted: #817B6F;        /* Dates, metadata — WCAG AA compliant on --color-background */
+
+  /* Brand */
+  --color-heading: #3F5232;           /* Headings — the strongest color on the page */
+  --color-link: #7F9A63;              /* Links — understated sage */
+  --color-link-hover: #3F5232;        /* Link hover — deepens to heading green */
+
+  /* Neutral */
+  --color-border: #C9C3B8;            /* Borders, rules — very thin, very quiet */
+  --color-border-subtle: #EFE9DD;     /* Near-invisible separators — same as soft background */
+
+  /* Accent */
+  --color-accent: #D9B84A;            /* Gold — micro-details only, one per screen max */
+  --color-accent-soft: #F0C36A;       /* Soft gold — hover states, softer callouts */
+
+  /* --- Typography --- */
+
+  --font-body: 'Source Sans 3', 'Source Sans 3-fallback', sans-serif;
+  --font-heading: 'Source Code Pro', 'Source Code Pro-fallback', monospace;
+  --font-code: 'Source Code Pro', 'Source Code Pro-fallback', monospace;
+  --font-editorial: 'Source Serif 4', 'Source Serif 4-fallback', serif;
+
+  /* Body sizes */
+  --body-font-size-m: 20px;
+  --body-font-size-s: 17px;
+  --body-font-size-xs: 15px;
+
+  /* Heading sizes */
+  --heading-font-size-xxl: 48px;
+  --heading-font-size-xl: 36px;
+  --heading-font-size-l: 28px;
+  --heading-font-size-m: 22px;
+  --heading-font-size-s: 18px;
+  --heading-font-size-xs: 16px;
+
+  /* Reading rhythm */
+  --line-height-body: 1.7;
+  --line-height-heading: 1.25;
+  --measure: 68ch;                    /* Comfortable reading width: 60-75 characters */
+
+  /* --- Spacing --- */
+
+  --nav-height: 80px;
+  --section-spacing: 48px;
+  --content-padding-mobile: 20px;
+  --content-padding-desktop: 32px;
+}
+
+/* --- Dark Mode --- */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #3A3A33;
+    --color-background-soft: #3F5232;
+    --color-background-tinted: #3F5232;
+
+    --color-text: #F6F4EE;
+    --color-text-muted: #C9C3B8;
+
+    --color-heading: #F6F4EE;
+    --color-link: #9FB68A;            /* Light sage — 5.3:1 contrast on dark bg */
+    --color-link-hover: #F6F4EE;
+
+    --color-border: #5F7846;
+    --color-border-subtle: #4A4A42;
+
+    /* Gold accent unchanged */
+  }
+}
+
+/* --- Desktop adjustments --- */
+
+@media (min-width: 900px) {
+  :root {
+    --body-font-size-m: 18px;
+    --body-font-size-s: 16px;
+    --body-font-size-xs: 14px;
+
+    --heading-font-size-xxl: 42px;
+    --heading-font-size-xl: 32px;
+    --heading-font-size-l: 26px;
+    --heading-font-size-m: 21px;
+    --heading-font-size-s: 18px;
+    --heading-font-size-xs: 16px;
+  }
+}

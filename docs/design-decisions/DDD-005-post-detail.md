@@ -1,6 +1,6 @@
 # DDD-005: Post Detail
 
-Status: **Proposal**
+Status: **Approved**
 
 ## Context
 
@@ -695,10 +695,10 @@ Horizontal scroll (per DDD-001's escape hatch) handles overflow. Authors should 
 
 ## Decision
 
-- [ ] Approved
+- [x] Approved
 - [ ] Approved with changes
 - [ ] Rejected
 
 ### Reviewer Notes
 
-_{Human writes here during review}_
+Approved 2026-03-13. All open questions resolved prior to approval. DDD-006 (#7) closed as covered by this DDD. Series navigation deferred to #24, syntax highlighting to #25. Path-based page detection chosen with URL coupling documented.

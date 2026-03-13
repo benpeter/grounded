@@ -65,11 +65,11 @@ Every PR that changes code served by EDS (JS, CSS, HTML, blocks) **must** includ
 
 ```
 Test URLs:
-- Before: https://main--grounded--benpeter.aem.page/
-- After: https://<branch>--grounded--benpeter.aem.page/<path>
+- Before: https://main--grounded--benpeter.aem.live/
+- After: https://<branch>--grounded--benpeter.aem.live/<path>
 ```
 
-**Branch name in URLs**: Slashes in git branch names become dashes in EDS preview URLs. `nefario/implement-foo` → `nefario-implement-foo--grounded--benpeter.aem.page`.
+**Branch name in URLs**: Slashes in git branch names become dashes in EDS preview URLs. `nefario/implement-foo` → `nefario-implement-foo--grounded--benpeter.aem.live`.
 
 The `<path>` should point to a page that demonstrates the change. This is required by the EDS review process and the PR template.
 

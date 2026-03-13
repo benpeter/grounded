@@ -49,6 +49,7 @@ async function loadFonts() {
  * @param {Element} main The container element
  */
 function buildPostIndexBlock(main) {
+  // Matches only the root path. EDS serves home as '/' without .html extension.
   if (window.location.pathname === '/') {
     const section = document.createElement('div');
     section.append(buildBlock('post-index', ''));

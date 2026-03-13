@@ -30,8 +30,9 @@ const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
 function parseDate(value) {
   if (!value) return 0;
   const num = Number(value);
-  if (!Number.isNaN(num) && num > 0) {
-    // Unix timestamp in seconds (EDS convention)
+  if (!Number.isNaN(num) && num > 0 && num < 1e10) {
+    // EDS returns Unix timestamps in seconds. 1e10 distinguishes seconds (10 digits)
+    // from milliseconds (13 digits) to prevent double-multiplication.
     return num * 1000;
   }
   return new Date(value).getTime() || 0;
@@ -184,6 +185,8 @@ export default async function decorate(block) {
   }
 
   if (!Array.isArray(entries) || entries.length === 0) {
+    // eslint-disable-next-line no-console
+    console.warn('Post index: query-index.json returned no entries');
     return;
   }
 

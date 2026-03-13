@@ -9,9 +9,6 @@
  * Design spec: docs/design-decisions/DDD-002-header.md
  */
 
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
-
 /**
  * Creates an inline SVG filter for the text corruption effect.
  * Uses feTurbulence + feDisplacementMap to produce organic warping.
@@ -51,23 +48,8 @@ function createCorruptionFilter() {
  * loads and decorates the header block
  * @param {Element} block The header block element
  */
-export default async function decorate(block) {
-  const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
-
-  // Extract content from nav fragment, with fallbacks
-  const linkEl = fragment?.querySelector('a[href="/"]');
-  const emEl = fragment?.querySelector('em');
-  const logoText = linkEl?.textContent?.trim() || 'Mostly Hallucinations';
-  const taglineText = emEl?.textContent?.trim() || 'Generated, meet grounded.';
-
-  // Split into "Mostly" and "Hallucinations" on the first space
-  const spaceIdx = logoText.indexOf(' ');
-  const wordMostly = spaceIdx > 0 ? logoText.substring(0, spaceIdx) : 'Mostly';
-  const wordHallucinations = spaceIdx > 0 ? logoText.substring(spaceIdx + 1) : 'Hallucinations';
-
-  // Build DOM fresh -- do not move fragment nodes (avoids decorateButtons class contamination)
+export default function decorate(block) {
+  // Build DOM fresh
   const nav = document.createElement('nav');
   nav.id = 'nav';
   nav.setAttribute('aria-label', 'Site');
@@ -82,17 +64,17 @@ export default async function decorate(block) {
 
   const mostlySpan = document.createElement('span');
   mostlySpan.className = 'logo-word-mostly';
-  mostlySpan.textContent = wordMostly;
+  mostlySpan.textContent = 'Mostly';
 
   const hallSpan = document.createElement('span');
   hallSpan.className = 'logo-word-hallucinations';
-  hallSpan.textContent = wordHallucinations;
+  hallSpan.textContent = 'Hallucinations';
 
   logoSpan.append(mostlySpan, hallSpan);
 
   const tagline = document.createElement('span');
   tagline.className = 'tagline';
-  tagline.textContent = taglineText;
+  tagline.textContent = 'Generated, meet grounded.';
 
   link.append(logoSpan, tagline);
   nav.append(link);

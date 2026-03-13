@@ -3,6 +3,7 @@
   max-width: var(--layout-max);
   margin-inline: auto;
   padding-inline: var(--content-padding-mobile);
+  padding-block: clamp(16px, 3vw, 24px);
   border-bottom: 1px solid var(--color-border-subtle);
 }
 
@@ -47,117 +48,39 @@
   font-weight: 400;
   font-size: clamp(16px, 4.5vw, 24px);
   color: var(--color-heading);
-  line-height: var(--line-height-heading);
+  line-height: 1;
 }
 
+/*
+ * "Hallucinations" — SVG displacement filter for organic text corruption.
+ * Uses feTurbulence + feDisplacementMap (injected by header.js).
+ * Deliberate design choice, not a rendering bug. See DDD-002.
+ */
 .header .logo-word-hallucinations {
   font-family: var(--font-heading);
   font-weight: 600;
   font-size: clamp(28px, 8vw, 42px);
   color: var(--color-heading);
-  line-height: var(--line-height-heading);
+  line-height: 1;
+  filter: url("#header-corrupt");
 }
 
 .header .tagline {
   font-family: var(--font-editorial);
   font-weight: 400;
   font-style: italic;
-  font-size: var(--body-font-size-xs);
+  font-size: clamp(16px, 2.5vw, 20px);
   color: var(--color-text-muted);
   line-height: 1.4;
-  margin-top: 8px;
+  margin-top: 2px;
 }
 
-/* Letter spans — inline-block is required for transforms and pseudo-elements.
-   Applied to ALL letters (not just corrupted ones) for uniform
-   baseline alignment and kerning behavior. */
-.header .logo-word-hallucinations .letter {
-  display: inline-block;
-  position: relative;
-}
-
-/*
- * Corruption effects — intentional letterform corruption per DDD-002.
- * Each transform/pseudo-element is a deliberate design choice, not a bug.
- * See header.js corruption map for the rationale per letter.
- *
- * All pseudo-elements use currentColor (inherits from --color-heading)
- * so they automatically adapt to dark mode. Exception: broken-junction
- * uses --color-background for the masking rectangle.
- *
- * All dimensions use em-relative values so corruptions scale with the
- * clamp() font size. MINIMUM dimension is 0.04em to ensure visibility
- * at the 28px floor on 1x displays.
- *
- * ALL positional values are starting points tuned against Source Code Pro
- * at 600 weight. Verify visually at 28px and 42px after any changes.
- */
-
-/* Stroke overshoot — vertical stroke extends below baseline */
-.header .logo-word-hallucinations [data-corrupt="overshoot"]::after {
-  content: '';
-  position: absolute;
-  bottom: -0.04em;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0.07em;
-  height: 0.04em;
-  background-color: currentcolor;
-}
-
-/* Counter closure — partial closing bar at counter opening */
-.header .logo-word-hallucinations [data-corrupt="counter-closure"]::after {
-  content: '';
-  position: absolute;
-  right: 0.12em;
-  top: 0.30em;
-  width: 0.04em;
-  height: 0.25em;
-  background-color: currentcolor;
-  border-radius: 0.5px;
-}
-
-/* Phantom serif — serif at baseline of right stem */
-.header .logo-word-hallucinations [data-corrupt="phantom-serif"]::after {
-  content: '';
-  position: absolute;
-  bottom: 0.20em;
-  right: 0.08em;
-  width: 0.18em;
-  height: 0.04em;
-  background-color: currentcolor;
-}
-
-/* Asymmetric crossbar — crossbar extends further right */
-.header .logo-word-hallucinations [data-corrupt="asymmetric-crossbar"]::after {
-  content: '';
-  position: absolute;
-  top: 0.20em;
-  right: -0.04em;
-  width: 0.06em;
-  height: 0.04em;
-  background-color: currentcolor;
-}
-
-/* Broken junction — background-colored mask breaks arch-to-stem connection.
-   FRAGILE: this mask depends on the header sitting on --color-background.
-   If the header ever has a different background, this must be updated. */
-.header .logo-word-hallucinations [data-corrupt="broken-junction"]::before {
-  content: '';
-  position: absolute;
-  right: 0.12em;
-  top: 0.22em;
-  width: 0.05em;
-  height: 0.05em;
-  background-color: var(--color-background);
-  z-index: 1;
-}
-
-/* responsive padding */
+/* responsive */
 @media (width >= 600px) {
   .header .nav-wrapper {
     padding-inline: var(--content-padding-tablet);
   }
+
 }
 
 @media (width >= 900px) {

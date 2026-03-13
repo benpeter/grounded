@@ -1,6 +1,6 @@
 # DDD-002: Header
 
-Status: **Approved**
+Status: **Implemented**
 
 ## Context
 
@@ -97,9 +97,9 @@ The header scrolls with the page (`position: relative` at all breakpoints). It i
 
 | Element | Font | Weight | Size Strategy | Color | Line-height |
 |---|---|---|---|---|---|
-| "Mostly" | `--font-heading` (Source Code Pro) | 400 (regular) | ~55-60% of "Hallucinations" size. Fluid via `clamp()`. | `--color-heading` | `--line-height-heading` (1.25) |
-| "Hallucinations" | `--font-heading` (Source Code Pro) | 600 (semibold) | `clamp(28px, 8vw, 42px)`. The 42px max matches the `width >= 900px` override of `--heading-font-size-xxl` (base value 48px, desktop value 42px). At mobile widths, 8vw on a 375px viewport yields ~30px. | `--color-heading` | `--line-height-heading` (1.25) |
-| Tagline | `--font-editorial` (Source Serif 4) | 400 italic | `--body-font-size-xs` (15px mobile / 14px desktop) | `--color-text-muted` | 1.4 |
+| "Mostly" | `--font-heading` (Source Code Pro) | 400 (regular) | ~55-60% of "Hallucinations" size. Fluid via `clamp(16px, 4.5vw, 24px)`. | `--color-heading` | 1 |
+| "Hallucinations" | `--font-heading` (Source Code Pro) | 600 (semibold) | `clamp(28px, 8vw, 42px)`. The 42px max matches the `width >= 900px` override of `--heading-font-size-xxl` (base value 48px, desktop value 42px). At mobile widths, 8vw on a 375px viewport yields ~30px. | `--color-heading` | 1 |
+| Tagline | `--font-editorial` (Source Serif 4) | 400 italic | `clamp(16px, 2.5vw, 20px)` — fluid scaling, independent of body-font-size tokens which have inverted desktop values. | `--color-text-muted` | 1.4 |
 
 **Rationale for size choices:**
 
@@ -147,9 +147,9 @@ This is the most critical design element in the header. The treatment must commu
 
 | Gap | Value | Notes |
 |---|---|---|
-| "Mostly" to "Hallucinations" | 0 (natural line stacking) | `--line-height-heading` (1.25) provides the visual gap between lines. No additional margin. |
-| "Hallucinations" to tagline | 8px | Enough separation to distinguish tagline from logo text; tight enough to read as a single branded unit. |
-| Header top/bottom | Vertical centering within `min-height: var(--nav-height)` | Content centered via flexbox. |
+| "Mostly" to "Hallucinations" | 0 (natural line stacking) | `line-height: 1` on both words for a tight stack. |
+| "Hallucinations" to tagline | 2px | Tight enough to read as a single branded unit. |
+| Header top/bottom | `padding-block: clamp(16px, 3vw, 24px)` | Fluid vertical breathing room that scales with viewport. |
 | Header bottom border | `1px solid var(--color-border-subtle)` | Faintest structural separation between header and page content. Near-invisible on `--color-background`. |
 
 ### Responsive Behavior
@@ -169,7 +169,7 @@ Note: The stacked three-line layout may exceed the 80px `--nav-height` value, es
 |---|---|
 | Home link | The entire logo and tagline are wrapped in a single `<a href="/">`. One tab stop. |
 | Hover | No color change. No underline. Cursor: pointer. |
-| Focus | Visible focus ring using `--color-accent` or a contrast-safe alternative (see DDD-001 OQ#5 regarding focus ring contrast). |
+| Focus | Visible focus ring using `--color-heading` (contrast-safe: 7.75:1 light, 10.42:1 dark). `--color-accent` (gold) was rejected — only 1.75:1 on light background, failing WCAG 2.4.13 (3:1 minimum). Uses `:focus-visible` so mouse clicks don't show the ring. |
 | Screen reader | `aria-label="Mostly Hallucinations - home"` on the link. Clean accessible name regardless of visual corruption treatment. |
 | `prefers-reduced-motion` | If any transitions are applied to corruption effects, they are removed. Static displacement remains — it is a design element, not animation. |
 
@@ -184,18 +184,15 @@ The semantic HTML the header block produces after decoration:
   <div class="header block" data-block-name="header" data-block-status="loaded">
     <div class="nav-wrapper">
       <nav id="nav" aria-label="Site">
-        <a href="/" class="site-logo" aria-label="Mostly Hallucinations - home">
+        <a href="/" class="site-logo" aria-label="Mostly Hallucinations, home">
           <span class="logo-text">
             <span class="logo-word-mostly">Mostly</span>
-            <span class="logo-word-hallucinations">
-              <!-- Implementation determines inner structure:
-                   CSS approach: per-letter <span> elements
-                   SVG approach: inline SVG with role="img" aria-hidden="true" -->
-              Hallucinations
-            </span>
+            <span class="logo-word-hallucinations">Hallucinations</span>
           </span>
           <span class="tagline">Generated, meet grounded.</span>
         </a>
+        <!-- SVG filter for corruption effect (hidden, zero-size) -->
+        <svg width="0" height="0" aria-hidden="true">...</svg>
       </nav>
     </div>
   </div>
@@ -208,7 +205,7 @@ The semantic HTML the header block produces after decoration:
 - **Single `<a>` wrapping all content.** One tab stop. The entire header is the home link.
 - **`<span>` not headings for logo text.** The page `<h1>` belongs to page content, not the site logo. Using headings here would break heading hierarchy on every page.
 - **Separate spans for "Mostly" and "Hallucinations"** enable independent styling: different weights, sizes, and the corruption treatment on "Hallucinations" only.
-- **`aria-label` provides the accessible name** regardless of whether corruption is implemented via CSS transforms or SVG paths. Screen readers announce "Mostly Hallucinations - home" consistently.
+- **`aria-label` provides the accessible name.** Uses comma separator (`"Mostly Hallucinations, home"`) to avoid screen readers announcing "hyphen" literally. Screen readers announce the full accessible name regardless of the SVG filter corruption.
 
 **Authored content (nav fragment):**
 
@@ -247,11 +244,11 @@ Flexbox, column direction. Three lines of text stacked vertically with no horizo
 
 ### Corruption Effect — Implementation Approaches
 
-**Approach A: CSS-only with per-letter spans** — `decorate()` splits "Hallucinations" into individual `<span>` elements. Corrupted letters receive CSS transforms (`translateY`, `rotate`, `skewX`) to simulate the specified corruptions. Zero additional asset weight, live text for selection and accessibility, straightforward implementation. Limitation: CSS transforms move entire glyphs. "Counter closure" (c becoming more like o) and "broken junction" (gap in n's arch) require modifying glyph anatomy, which transforms cannot do. Only 2-3 of 5 corruption types achievable with full fidelity.
+**Approach A: CSS-only with per-letter spans** — `decorate()` splits "Hallucinations" into 14 individual `<span>` elements with CSS pseudo-elements for corruption. Prototyped and rejected: the pseudo-element rectangles read as foreign elements stuck to letters rather than organic letterform corruption. Also produced awkward DOM complexity.
 
-**Approach B: Inline SVG for "Hallucinations"** — "Hallucinations" rendered as an inline SVG with hand-modified glyph outlines extracted from Source Code Pro. Full control over all 5 corruption types at the path level. Estimated 2-4KB. Uses `fill="currentColor"` for automatic dark mode support. `role="img"` and `aria-hidden="true"` on the SVG (accessible name handled by the parent link's `aria-label`). Limitation: requires extracting and editing glyph paths from the font file — higher implementation complexity.
+**Approach B: Inline SVG glyph paths** — "Hallucinations" rendered as an inline SVG with hand-modified glyph outlines. Full control over all corruption types at the path level. Not pursued due to higher implementation complexity (glyph extraction, path editing).
 
-**Recommendation**: Start with CSS-only (Approach A). Prototype and evaluate visually. Escalate to SVG (Approach B) if the achievable corruption types feel insufficient. A hybrid approach is also viable — CSS transforms for overshoot, asymmetry, and phantom serif; SVG only for the two types requiring path modification.
+**Approach C: SVG displacement filter (IMPLEMENTED)** — An inline SVG `<filter>` using `feTurbulence` + `feDisplacementMap` applies organic warping to the entire word. No per-letter spans — "Hallucinations" is plain text with `filter: url("#header-corrupt")`. The filter produces subtle, non-rectangular distortion that reads as "plausible at first glance, uncanny on closer inspection." Deterministic via `seed` parameter (42). Zero additional asset weight, live text, scales with any font size. The corruption is whole-word rather than per-letter, which creates a more cohesive effect.
 
 ### Font Size Scaling
 
@@ -266,32 +263,32 @@ Flexbox, column direction. Three lines of text stacked vertically with no horizo
 | Header background | `background-color` | `--color-background` | Existing |
 | Logo "Mostly" | `font-family` | `--font-heading` | Existing |
 | Logo "Mostly" | `color` | `--color-heading` | Existing |
-| Logo "Mostly" | `line-height` | `--line-height-heading` | Existing |
+| Logo "Mostly" | `line-height` | `1` (tight stack) | Hardcoded |
 | Logo "Hallucinations" | `font-family` | `--font-heading` | Existing |
 | Logo "Hallucinations" | `color` | `--color-heading` | Existing |
-| Logo "Hallucinations" | `line-height` | `--line-height-heading` | Existing |
+| Logo "Hallucinations" | `line-height` | `1` (tight stack) | Hardcoded |
 | Tagline | `font-family` | `--font-editorial` | Existing |
 | Tagline | `color` | `--color-text-muted` | Existing |
-| Tagline | `font-size` | `--body-font-size-xs` | Existing |
+| Tagline | `font-size` | `clamp(16px, 2.5vw, 20px)` | Hardcoded — body-font-size tokens have inverted desktop values |
 | Header bottom border | `border-color` | `--color-border-subtle` | Existing |
 | Header height | `min-height` | `--nav-height` | Existing |
 | Header max-width | `max-width` | `--layout-max` | Existing |
 | Mobile padding | `padding-inline` | `--content-padding-mobile` | Existing |
 | Tablet padding | `padding-inline` | `--content-padding-tablet` | Existing |
 | Desktop padding | `padding-inline` | `--content-padding-desktop` | Existing |
-| Focus ring | `outline-color` | `--color-accent` (or contrast-safe alternative) | Existing |
+| Focus ring | `outline-color` | `--color-heading` | Existing — `--color-accent` rejected for contrast |
 
 All tokens exist in `styles/tokens.css`. No new tokens proposed.
 
 ---
 
-## Open Questions
+## Open Questions (Resolved)
 
-1. **CSS vs. SVG for corruption effect**: CSS can achieve 2-3 of 5 corruption types with full fidelity (stroke overshoot, asymmetric crossbar, phantom serif as approximation). SVG achieves all 5. The implementation agent should prototype CSS first and escalate to SVG if the rendered result feels insufficient. This is a judgment call requiring visual evaluation.
+1. ~~**CSS vs. SVG for corruption effect**~~: **Resolved — Approach C (SVG displacement filter).** Per-letter CSS pseudo-elements (Approach A) were prototyped and rejected — rectangles read as foreign elements rather than organic corruption. SVG displacement filter produces whole-word organic warping with dramatically simpler code. See "Implementation Approaches" above.
 
-2. **`--nav-height` adequacy**: The stacked three-line layout — "Mostly" at ~17px, "Hallucinations" at 28-42px, tagline at 14-15px, plus internal spacing and container padding — may exceed 80px at certain viewport widths. `min-height` accommodates this. The implementation agent should verify at 320px, 375px, and 414px viewport widths.
+2. ~~**`--nav-height` adequacy**~~: **Resolved.** `min-height: var(--nav-height)` with `padding-block: clamp(16px, 3vw, 24px)` accommodates the stacked layout at all viewport widths. Verified at 375px through 1400px.
 
-3. **Mobile corruption visibility**: At 28px font size for "Hallucinations", 1-2px corruptions may fall below the sub-pixel threshold. Accept that corruption gracefully degrades to clean text on small screens. The effect is a bonus on desktop, not a requirement on mobile.
+3. ~~**Mobile corruption visibility**~~: **Resolved.** The SVG displacement filter applies uniformly regardless of font size. The `scale` parameter (3) produces visible warping even at 28px. Graceful degradation is no longer a concern.
 
 4. **Favicon and social avatar**: Brand identity specifies "MH" for small-size applications. This is a separate deliverable — not in scope for header implementation.
 
@@ -299,10 +296,19 @@ All tokens exist in `styles/tokens.css`. No new tokens proposed.
 
 ## Decision
 
-- [x] Approved
-- [ ] Approved with changes
+- [ ] Approved
+- [x] Approved with changes
 - [ ] Rejected
 
 ### Reviewer Notes
 
-Approved 2026-03-12.
+Approved 2026-03-12. Implemented 2026-03-13.
+
+**Implementation changes from approved spec:**
+- Corruption approach changed from per-letter CSS pseudo-elements (Approach A) to SVG displacement filter (Approach C) after visual review of Approach A prototype
+- Line-heights tightened from `--line-height-heading` (1.25) to `1` for tighter logo stack
+- Tagline font-size changed from `--body-font-size-xs` to `clamp(16px, 2.5vw, 20px)` — larger, fluid, avoids token inversion
+- Tagline margin reduced from 8px to 2px
+- Vertical padding changed from flexbox centering within nav-height to explicit `padding-block: clamp(16px, 3vw, 24px)`
+- Focus ring resolved: `--color-heading` (WCAG 7.75:1) over `--color-accent` (1.75:1)
+- aria-label separator: comma instead of hyphen

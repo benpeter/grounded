@@ -3,7 +3,7 @@
  *
  * This replaces the AEM boilerplate header entirely.
  * No navigation, no hamburger menu, no sections/tools grid.
- * The header is a typographic logo with intentionally corrupted letterforms
+ * The header is a typographic logo with an SVG displacement filter
  * on "Hallucinations" -- a brand identity feature, not a rendering bug.
  *
  * Design spec: docs/design-decisions/DDD-002-header.md
@@ -12,21 +12,40 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
-/*
- * Corruption map (DDD-002, illustrative -- positions may change in design review):
- *   Position 4  (l): overshoot         -- stroke extends below baseline
- *   Position 6  (c): counter-closure   -- counter curls inward
- *   Position 8  (n): phantom-serif     -- serif appears on right stem
- *   Position 10 (t): asymmetric-crossbar -- crossbar extends right
- *   Position 13 (n): broken-junction   -- arch disconnects from right stem
+/**
+ * Creates an inline SVG filter for the text corruption effect.
+ * Uses feTurbulence + feDisplacementMap to produce organic warping.
+ * The seed value makes the pattern deterministic (same every load).
  */
-const CORRUPTION_MAP = {
-  4: 'overshoot',
-  6: 'counter-closure',
-  8: 'phantom-serif',
-  10: 'asymmetric-crossbar',
-  13: 'broken-junction',
-};
+function createCorruptionFilter() {
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('width', '0');
+  svg.setAttribute('height', '0');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.style.position = 'absolute';
+
+  const filter = document.createElementNS(svgNS, 'filter');
+  filter.id = 'header-corrupt';
+
+  const turbulence = document.createElementNS(svgNS, 'feTurbulence');
+  turbulence.setAttribute('type', 'turbulence');
+  turbulence.setAttribute('baseFrequency', '0.02 0.06');
+  turbulence.setAttribute('numOctaves', '2');
+  turbulence.setAttribute('seed', '42');
+  turbulence.setAttribute('result', 'noise');
+
+  const displacement = document.createElementNS(svgNS, 'feDisplacementMap');
+  displacement.setAttribute('in', 'SourceGraphic');
+  displacement.setAttribute('in2', 'noise');
+  displacement.setAttribute('scale', '3');
+  displacement.setAttribute('xChannelSelector', 'R');
+  displacement.setAttribute('yChannelSelector', 'G');
+
+  filter.append(turbulence, displacement);
+  svg.append(filter);
+  return svg;
+}
 
 /**
  * loads and decorates the header block
@@ -67,18 +86,7 @@ export default async function decorate(block) {
 
   const hallSpan = document.createElement('span');
   hallSpan.className = 'logo-word-hallucinations';
-
-  // Split word into per-letter spans with corruption data attributes
-  [...wordHallucinations].forEach((char, i) => {
-    const pos = i + 1; // 1-indexed
-    const letterSpan = document.createElement('span');
-    letterSpan.className = `letter letter-${pos}`;
-    letterSpan.textContent = char;
-    if (CORRUPTION_MAP[pos]) {
-      letterSpan.dataset.corrupt = CORRUPTION_MAP[pos];
-    }
-    hallSpan.append(letterSpan);
-  });
+  hallSpan.textContent = wordHallucinations;
 
   logoSpan.append(mostlySpan, hallSpan);
 
@@ -92,6 +100,9 @@ export default async function decorate(block) {
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
+
+  // Inject SVG filter definition (hidden, zero-size)
+  navWrapper.append(createCorruptionFilter());
 
   block.textContent = '';
   block.append(navWrapper);

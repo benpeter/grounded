@@ -671,29 +671,25 @@ No new tokens proposed. All hardcoded values are noted with rationale.
 
 ---
 
-## Open Questions
+## Resolved Questions
 
-1. **DDD-005 vs DDD-006 scope boundary**
-The DDD inventory (README.md) lists DDD-005 as "Post Detail" and DDD-006 as "Typography & Code" with a dependency on 005. This DDD defines typography specifications, code block styling, and blockquote patterns as part of the post detail surface because these elements are inseparable from the reading experience. If DDD-006 is still needed, its scope could focus on global typography refinements that apply outside post detail (e.g., legal pages) or on future additions like syntax highlighting and table-of-contents. Alternatively, DDD-006 could be retired as "covered by DDD-005."
+1. **DDD-005 vs DDD-006 scope boundary** — **Resolved: DDD-006 closed.**
+DDD-005 covers typography, code block styling, and blockquote patterns as part of the post detail reading experience. DDD-006 ("Typography & Code") is retired as covered by DDD-005. GitHub issue #7 closed with explanation. If global typography refinements are needed for non-post surfaces, a new scoped issue can be created.
 
-2. **Mobile blockquote line length**
-At 375px viewport, blockquotes render at approximately 34 characters per line (302px text column after border and padding). This is below the 45-character recommended minimum. Options: (a) accept for V1 — blockquotes are infrequent in technical posts; (b) reduce padding-left on mobile; (c) remove left border on mobile and use background tint instead. Recommendation: accept for V1, revisit with real content.
+2. **Mobile blockquote line length** — **Resolved: accept for V1.**
+At 375px viewport, blockquotes render at approximately 34 characters per line (302px text column after border and padding). This is below the 45-character recommended minimum but acceptable: blockquotes are infrequent in technical posts and typically short. Revisit with real content if needed.
 
-3. **Series metadata: parsed but not rendered V1**
-The content model defines `series` and `series-part` fields. The post detail page should parse these from metadata (making them available for future use) but not render series navigation in V1. A future DDD will define the series nav component (prev/next links, series name, part indicator). The implementation should store parsed series metadata in a way that's accessible to future decoration JS without requiring DOM changes.
+3. **Series metadata: parsed but not rendered V1** — **Resolved: deferred to future DDD.**
+Series metadata (`series`, `series-part`) is parsed but not rendered in V1. Implementation should store parsed values for future use without DOM changes. Series navigation DDD tracked in GitHub issue #24.
 
-4. **Syntax highlighting language convention**
-V1 ships without syntax highlighting. When syntax highlighting is added (likely via Prism.js), the convention for language classes on `<code>` elements should be `class="language-{lang}"` (the Prism default). EDS does not automatically add language classes — this will need decoration JS or author convention (e.g., marking language in the first line of the code block). Defer to the implementing DDD.
+4. **Syntax highlighting language convention** — **Resolved: deferred.**
+V1 ships without syntax highlighting. Language convention and Prism.js integration tracked in GitHub issue #25.
 
-5. **Post-detail page detection mechanism**
-The CSS scoping strategy requires detecting that the current page is a blog post. Options:
-   - **Path-based**: `window.location.pathname.startsWith('/blog/')` in `scripts.js`, adds `body.post-detail` class.
-   - **Metadata-based**: Check for presence of `type` meta tag (only blog posts have it).
-   - **Template-based**: EDS template metadata on the page.
-   The recommendation is path-based detection as it is simplest and aligns with the URL structure (`/blog/{slug}`). This also determines where `decorateButtons()` exclusion logic lives.
+5. **Post-detail page detection mechanism** — **Resolved: path-based.**
+Detection via `window.location.pathname.startsWith('/blog/')` in `scripts.js`, adding `body.post-detail` class. This is the simplest approach and aligns with the URL structure defined in `docs/site-structure.md` (`/blog/{slug}`). This decision creates a coupling between the CSS scoping strategy and the URL structure — any future change to the blog URL pattern must update the detection logic in `scripts.js`. The `decorateButtons()` exclusion logic also lives at this detection point.
 
-6. **68ch = approximately 40-45 monospace characters for code**
-`--measure: 68ch` is calculated relative to `--font-body` (Source Sans 3). Code blocks use `--font-code` (Source Code Pro), which is monospace and wider per character. At 68ch of Source Sans 3, a code block fits approximately 40-45 monospace characters before horizontal scrolling triggers. This is adequate for most code samples but may clip longer lines (e.g., full import statements, long variable names). The horizontal scroll behavior (per DDD-001's escape hatch) handles overflow gracefully.
+6. **68ch = approximately 40-45 monospace characters for code** — **Resolved: accepted.**
+Horizontal scroll (per DDD-001's escape hatch) handles overflow. Authors should keep code examples concise where possible.
 
 ---
 

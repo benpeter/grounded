@@ -1,0 +1,55 @@
+/* tva */
+
+/*
+ * Quote block — standard and pull-quote variants.
+ *
+ * Standard (.quote): subtle left border, body prose styling.
+ * Pull-quote (.quote.pull-quote): gold accent border, editorial font, aria-hidden.
+ *
+ * Post-detail scoped spacing (margin-block) lives in styles/post-detail.css,
+ * not here. These styles are generic and usable on any page.
+ *
+ * Design spec: docs/design-decisions/DDD-005-post-detail.md
+ */
+
+/* --- Standard blockquote --- */
+
+.quote blockquote {
+  border-left: 3px solid var(--color-border);
+  margin: 0;
+  padding-left: 1.5em;
+}
+
+.quote blockquote p {
+  margin-bottom: 0;
+  margin-top: var(--space-paragraph, 1em);
+}
+
+.quote blockquote p:first-child {
+  margin-top: 0;
+}
+
+/* --- Pull-quote variant --- */
+
+.quote.pull-quote figure {
+  margin: 0;
+}
+
+.quote.pull-quote blockquote {
+  border-left: 3px solid var(--color-accent);
+  margin: 0;
+  padding-left: 1.5em;
+}
+
+.quote.pull-quote blockquote p {
+  color: var(--color-text);
+  font-family: var(--font-editorial);
+  font-size: var(--heading-font-size-m);
+  line-height: 1.5;
+  margin-bottom: 0;
+  margin-top: var(--space-paragraph, 1em);
+}
+
+.quote.pull-quote blockquote p:first-child {
+  margin-top: 0;
+}

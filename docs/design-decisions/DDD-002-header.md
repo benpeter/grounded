@@ -170,7 +170,7 @@ Note: The stacked three-line layout may exceed the 80px `--nav-height` value, es
 | Home link | The entire logo and tagline are wrapped in a single `<a href="/">`. One tab stop. |
 | Hover | No color change. No underline. Cursor: pointer. |
 | Focus | Visible focus ring using `--color-heading` (contrast-safe: 7.75:1 light, 10.42:1 dark). `--color-accent` (gold) was rejected — only 1.75:1 on light background, failing WCAG 2.4.13 (3:1 minimum). Uses `:focus-visible` so mouse clicks don't show the ring. |
-| Screen reader | `aria-label="Mostly Hallucinations - home"` on the link. Clean accessible name regardless of visual corruption treatment. |
+| Screen reader | `aria-label="Mostly Hallucinations, home"` on the link (comma separator — avoids screen readers announcing "hyphen" literally). Clean accessible name regardless of visual corruption treatment. |
 | `prefers-reduced-motion` | If any transitions are applied to corruption effects, they are removed. Static displacement remains — it is a design element, not animation. |
 
 ---

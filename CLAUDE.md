@@ -28,7 +28,7 @@ See `docs/site-structure.md` for header, footer, page layouts, and URL structure
 
 Key points:
 - Header: logo + tagline, no navigation links
-- Footer: `© 2026 Ben Peter · LinkedIn · Legal Notice · Privacy Policy`
+- Footer: `© 2026 Ben Peter · Legal Notice · Privacy Policy`
 - Single-column layout, no sidebar
 - Home page IS the post index
 

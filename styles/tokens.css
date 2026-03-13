@@ -19,11 +19,11 @@
 
   /* Text */
   --color-text: #3A3A33;              /* Body text */
-  --color-text-muted: #817B6F;        /* Dates, metadata — WCAG AA compliant on --color-background */
+  --color-text-muted: #6F6A5E;        /* Dates, metadata — 4.89:1 on --color-background, WCAG AA compliant */
 
   /* Brand */
   --color-heading: #3F5232;           /* Headings — the strongest color on the page */
-  --color-link: #7F9A63;              /* Links — understated sage */
+  --color-link: #5A7543;              /* Links — deepened sage, 4.70:1 on --color-background, WCAG AA compliant */
   --color-link-hover: #3F5232;        /* Link hover — deepens to heading green */
 
   /* Neutral */

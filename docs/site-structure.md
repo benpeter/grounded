@@ -15,11 +15,10 @@ Logo text + tagline. No navigation links. The header links home and that's it.
 ## Footer
 
 ```
-© 2026 Ben Peter · LinkedIn · Legal Notice · Privacy Policy
+© 2026 Ben Peter · Legal Notice · Privacy Policy
 ```
 
-- "Ben Peter" and "LinkedIn" are separate text links
-- LinkedIn sits next to the author's name as the single social link
+- "Ben Peter" links to the author's LinkedIn profile
 - No icons
 - Legal Notice and Privacy Policy are required (German law: DDG §5, DSGVO)
 - Separate pages, linked from footer, not indexed

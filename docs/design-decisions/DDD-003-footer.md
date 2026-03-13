@@ -10,14 +10,13 @@ The footer is the page's final element — a legal attribution line that closes 
 
 **Site structure (docs/site-structure.md)**
 
-The footer content is exactly:
+The footer content is:
 
 ```
-© 2026 Ben Peter · LinkedIn · Legal Notice · Privacy Policy
+© 2026 Ben Peter · Legal Notice · Privacy Policy
 ```
 
-- "Ben Peter" and "LinkedIn" are described as separate text links
-- LinkedIn sits next to the author's name as the single social link
+- "Ben Peter" is a link to the author's LinkedIn profile (see Open Question 1, resolved)
 - No icons, no bio, no headshot, no "about the author" section
 - Legal Notice and Privacy Policy are required under German law (DDG §5, DSGVO)
 - Both legal pages are separate pages linked from the footer, not indexed
@@ -55,7 +54,7 @@ No newsletter signup, no RSS link, no social icon grid, no secondary navigation,
 
 **Accessibility findings**
 
-Two token-level contrast failures affect the footer but are site-wide issues, not footer-specific. They are documented in Open Questions 2 and 3 and are out of scope for this DDD to resolve. The footer uses `text-decoration: underline` on all links by default to satisfy WCAG 1.4.1 (non-color indicator for link distinguishability) without depending on color contrast alone.
+Two token-level contrast failures that previously affected the footer have been resolved site-wide (see Open Questions 2 and 3, resolved). `--color-text-muted` (#6F6A5E) now achieves 4.89:1 and `--color-link` (#5A7543) achieves 4.70:1 on `--color-background`, both passing WCAG 1.4.3 AA. The footer uses `text-decoration: underline` on all links by default to satisfy WCAG 1.4.1 (non-color indicator for link distinguishability), which remains load-bearing since the new link and muted text colors have approximately 1:1 luminance contrast against each other.
 
 ---
 
@@ -85,8 +84,8 @@ The top border (`1px solid var(--color-border-subtle)`) is applied to the inner 
 | <20px>  padding-block-start: --section-spacing  |
 |         (48px)                                  |
 |                                                 |
-|         (c) 2026 Ben Peter . LinkedIn .         |
-|         Legal Notice . Privacy Policy           |
+|      (c) 2026 Ben Peter . Legal Notice .        |
+|              Privacy Policy                     |
 |                                                 |
 | <20px>  padding-block-end: 24px                 |
 |                                                 |
@@ -107,7 +106,7 @@ At 375px viewport with 20px padding both sides, 335px is available. The full lin
 |                                                                      |
 | <32px>  padding-block-start: --section-spacing (48px)     <32px>     |
 |                                                                      |
-|         (c) 2026 Ben Peter . LinkedIn . Legal Notice . Privacy Policy|
+|         (c) 2026 Ben Peter . Legal Notice . Privacy Policy           |
 |                                                                      |
 | <32px>  padding-block-end: 24px                           <32px>     |
 |                                                                      |
@@ -125,13 +124,13 @@ At 900px+ with 32px padding each side, the line fits comfortably on a single row
 | Copyright text ("© 2026") | `--font-body` (inherited) | `--body-font-size-xs` | `--color-text-muted` (inherited) | 400 (inherited) |
 | Author name ("Ben Peter") | `--font-body` (inherited) | `--body-font-size-xs` | `--color-link` | 400 (inherited) |
 | Middot separators ("·") | `--font-body` (inherited) | `--body-font-size-xs` | `--color-text-muted` (inherited) | 400 (inherited) |
-| Link text ("LinkedIn", "Legal Notice", "Privacy Policy") | `--font-body` (inherited) | `--body-font-size-xs` | `--color-link` | 400 (inherited) |
+| Link text ("Legal Notice", "Privacy Policy") | `--font-body` (inherited) | `--body-font-size-xs` | `--color-link` | 400 (inherited) |
 
 `--body-font-size-xs` is 15px on mobile and 14px on desktop (per `tokens.css` media query at `width >= 900px`). This is the smallest size in the type scale — appropriate for legal attribution text that should be present without being prominent.
 
-All links use `--color-link` (sage green, #7F9A63 light / #9FB68A dark). Using a different, more muted link treatment in the footer would risk making links unrecognizable on a site with very few interactive elements. The standard `--color-link` is already the understated version — using a different color here adds inconsistency without adding restraint.
+All links use `--color-link` (deepened sage, #5A7543 light / #9FB68A dark). Using a different, more muted link treatment in the footer would risk making links unrecognizable on a site with very few interactive elements. The standard `--color-link` is already the understated version — using a different color here adds inconsistency without adding restraint.
 
-"Ben Peter" is a link in the current spec (see Open Question 1 for the alternative). Its color matches the other links.
+"Ben Peter" is a link to LinkedIn (Open Question 1, resolved). Its color matches the other links.
 
 ### Spacing & Rhythm
 
@@ -168,7 +167,7 @@ No width breakpoint is needed between 600px and 900px other than the padding cha
 | Link hover | `color: var(--color-link-hover)`, `text-decoration: underline`. Color deepens to `--color-link-hover` (heading green). No decoration change on hover — the underline is always present. |
 | Link focus-visible | `outline: 2px solid var(--color-heading); outline-offset: 2px`. Matches DDD-002 header focus ring. `--color-heading` achieves 7.75:1 on `--color-background` (light) and 10.42:1 (dark). |
 | Link active | No treatment beyond hover. |
-| Keyboard navigation | Tab order follows DOM order: "Ben Peter", "LinkedIn", "Legal Notice", "Privacy Policy" (four tab stops with current spec). Resolving Open Question 1 in favor of simplification reduces this to three tab stops. |
+| Keyboard navigation | Tab order follows DOM order: "Ben Peter", "Legal Notice", "Privacy Policy" (three tab stops). |
 | External link (LinkedIn) | `target="_blank" rel="noopener"` on all LinkedIn URLs. Internal links (`/legal`, `/privacy`) open in the same tab. |
 | Screen reader | `<footer>` landmark is announced. Links are read as inline text within the paragraph. Literal middot characters ("·") cause a brief natural pause — no `aria-hidden` or `aria-label` needed for middot separators. |
 | `prefers-reduced-motion` | No transitions or animations are proposed. No action required. |
@@ -178,18 +177,6 @@ No width breakpoint is needed between 600px and 900px other than the padding cha
 ## HTML Structure
 
 ### Authored `/footer` fragment (CMS-authored `.plain.html`)
-
-Following site-structure.md where "Ben Peter" and "LinkedIn" are both links:
-
-```html
-<div>
-  <p>
-    &copy;&nbsp;2026&nbsp;<a href="https://www.linkedin.com/in/benpeter/">Ben Peter</a> · <a href="https://www.linkedin.com/in/benpeter/" target="_blank" rel="noopener">LinkedIn</a> · <a href="/legal">Legal Notice</a> · <a href="/privacy">Privacy Policy</a>
-  </p>
-</div>
-```
-
-If Open Question 1 is resolved in favor of the simplified single-link version:
 
 ```html
 <div>
@@ -213,8 +200,7 @@ If Open Question 1 is resolved in favor of the simplified single-link version:
         <div class="default-content-wrapper">
           <p>
             © 2026
-            <a href="https://www.linkedin.com/in/benpeter/">Ben Peter</a> ·
-            <a href="https://www.linkedin.com/in/benpeter/" target="_blank" rel="noopener">LinkedIn</a> ·
+            <a href="https://www.linkedin.com/in/benpeter/" target="_blank" rel="noopener" aria-label="Ben Peter on LinkedIn">Ben Peter</a> ·
             <a href="/legal">Legal Notice</a> ·
             <a href="/privacy">Privacy Policy</a>
           </p>
@@ -278,47 +264,25 @@ No new tokens proposed. `padding-block-end: 24px` is hardcoded intentionally —
 
 ---
 
-## Open Questions
+## Open Questions (Resolved)
 
-**1. Should "Ben Peter" be the only link, with "LinkedIn" removed?**
+**1. ~~Should "Ben Peter" be the only link, with "LinkedIn" removed?~~**
 
-Site-structure.md describes "Ben Peter" and "LinkedIn" as separate text links. This DDD follows that spec. However, having two adjacent links to the same URL is unusual UX.
+**Resolved: Yes — simplified.** "Ben Peter" is now the sole LinkedIn link with `aria-label="Ben Peter on LinkedIn"` and `target="_blank" rel="noopener"`. "LinkedIn" as a separate text link is removed. Footer content is now:
 
-The UX case for simplification:
-- Current spec: `© 2026 Ben Peter · LinkedIn · Legal Notice · Privacy Policy` (Ben Peter and LinkedIn both link to `linkedin.com/in/benpeter`)
-- Simplified: `© 2026 Ben Peter · Legal Notice · Privacy Policy` where "Ben Peter" carries `aria-label="Ben Peter on LinkedIn"` and `target="_blank" rel="noopener"`
+```
+© 2026 Ben Peter · Legal Notice · Privacy Policy
+```
 
-Arguments for simplification:
-- Eliminates a redundant destination (both links go to the same place)
-- Reduces cognitive load and tab stops by one
-- No about page exists on this site — "Ben Peter" as a link has nowhere better to go than LinkedIn
-- Cleaner, shorter line
+This eliminates the redundant destination, reduces tab stops from four to three, and produces a cleaner line. Site-structure.md updated to match.
 
-Arguments for keeping the current spec:
-- "LinkedIn" as visible link text explicitly signals the platform — no hover required to discover the destination
-- The current spec matches site-structure.md without requiring a spec change
-- Instant recognition: "LinkedIn" is understood without reading the `aria-label`
-- Pattern is standard for author footers
+**2. ~~`--color-text-muted` contrast fails WCAG AA at `--body-font-size-xs`~~**
 
-No change to site-structure.md is proposed here. This question is flagged for human resolution.
+**Resolved: Darkened to `#6F6A5E`.** The previous value (#817B6F) achieved only ~3.82:1 on `--color-background` (#F6F4EE), failing WCAG 1.4.3 AA (4.5:1 for normal text). The new value achieves 4.89:1 — comfortably above threshold with margin for rendering variance. The incorrect "WCAG AA compliant" comment in `tokens.css` has been corrected. This is a site-wide fix affecting all muted text (dates, metadata, tagline). The visual change is subtle: the muted text darkens slightly while remaining clearly subordinate to `--color-text` (#3A3A33, ~9.15:1).
 
-**2. `--color-text-muted` contrast fails WCAG AA at `--body-font-size-xs`**
+**3. ~~`--color-link` contrast fails WCAG 1.4.3 AA site-wide~~**
 
-The footer uses `--color-text-muted` (#817B6F on light mode) on `--color-background` (#F6F4EE). Computed contrast: approximately 3.82:1. WCAG 1.4.3 AA requires 4.5:1 for normal text. At `--body-font-size-xs` (14–15px, weight 400), this is normal text, not large text. The failure margin is 0.68 below threshold.
-
-This is a site-wide token-level issue, not a footer-specific one. The comment in `tokens.css` line 22 states "WCAG AA compliant on --color-background" — this comment is incorrect. Options:
-
-- **Accept as a conscious deviation**: Treat muted metadata text as intentionally subordinate, document the known failure. The copyright text is supplementary — it adds no information a user needs for navigation or comprehension.
-- **Use `--color-text` instead** (#3A3A33, ~9.15:1): Passes AA, but makes the footer visually equivalent in weight to body text, undermining the intended quiet treatment.
-- **Darken `--color-text-muted` in `tokens.css`**: A site-wide token change that would affect all muted text (dates, metadata, tagline). Requires its own design review.
-
-Resolution is out of scope for this DDD.
-
-**3. `--color-link` contrast fails WCAG 1.4.3 AA site-wide**
-
-`--color-link` (#7F9A63 on light mode) on `--color-background` (#F6F4EE): approximately 2.85:1 — fails the 4.5:1 AA threshold. The footer's `text-decoration: underline` mitigates the 1.4.1 distinguishability requirement (links are identifiable by decoration, not color alone), but does not address the 1.4.3 color contrast requirement for the link text itself.
-
-This is a site-wide token-level failure. Resolution requires a change to `--color-link` in `tokens.css`. Out of scope for this DDD.
+**Resolved: Deepened to `#5A7543`.** The previous value (#7F9A63) achieved only ~2.85:1 on `--color-background` (#F6F4EE), failing WCAG 1.4.3 AA. The new value achieves 4.70:1 — above the 4.5:1 threshold. The hue stays in the same sage-green family. Note: `--color-link` (#5A7543) and `--color-text-muted` (#6F6A5E) have approximately 1:1 luminance contrast against each other, making `text-decoration: underline` the load-bearing distinguisher for WCAG 1.4.1 compliance in contexts where links appear among muted text (e.g., the footer). Dark mode values are unchanged (`--color-link: #9FB68A` achieves ~5.3:1 on `--color-background: #3A3A33`).
 
 ---
 

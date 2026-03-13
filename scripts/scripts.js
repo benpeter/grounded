@@ -45,6 +45,18 @@ async function loadFonts() {
 }
 
 /**
+ * Builds post-index block on the home page and prepends to main.
+ * @param {Element} main The container element
+ */
+function buildPostIndexBlock(main) {
+  if (window.location.pathname === '/') {
+    const section = document.createElement('div');
+    section.append(buildBlock('post-index', ''));
+    main.prepend(section);
+  }
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -69,6 +81,7 @@ function buildAutoBlocks(main) {
     }
 
     buildHeroBlock(main);
+    buildPostIndexBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

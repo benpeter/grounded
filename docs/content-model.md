@@ -60,3 +60,26 @@ Tags only. Flat namespace. Lowercase, hyphenated.
 ## Structured Data
 
 JSON-LD on every post page using `TechArticle` with `proficiencyLevel: Expert`.
+
+## Query Index
+
+Blog post metadata is exposed to the frontend via the EDS content index. The `helix-query.yaml` file at the project root controls indexing.
+
+**Endpoint:** `/query-index.json`
+
+**Include path:** `/blog/**` (only blog posts are indexed)
+
+**Indexed columns:**
+
+| Column | Source | Notes |
+|---|---|---|
+| `path` | Automatic | Page URL path. Included by EDS automatically. |
+| `title` | `og:title` meta tag | Page title. |
+| `description` | `description` meta tag | 1-2 sentence summary. |
+| `date` | `date` meta tag | Publication date. Used for sort order. |
+| `type` | `type` meta tag | Post type enum. |
+| `tags` | `tags` meta tag | Comma-separated tag slugs. |
+
+Adding a new metadata field to posts requires a corresponding property entry in `helix-query.yaml` to make it available in the index.
+
+Changes to `helix-query.yaml` take effect after EDS reindexes content (automatic on next content preview/publish).

@@ -110,6 +110,23 @@ Each block should be self-contained and re-useable, with CSS and JS files follow
 
 Auto-blocking is the process of creating blocks that aren't explicitly authored into the page based on patterns in the content. See the `buildAutoBlocks` function in `scripts.js`.
 
+### Page-Type Detection
+
+Pages requiring surface-specific behavior use a body class added during eager decoration in `scripts.js`. Detection is path-based.
+
+Current page types:
+
+| Body class | Detection condition | Surface |
+|---|---|---|
+| `post-detail` | `window.location.pathname.startsWith('/blog/')` | Individual post pages |
+
+**How to add a new page type**:
+1. Add a condition in `buildAutoBlocks()` in `scripts.js`
+2. Add the body class: `document.body.classList.add('your-page-type')`
+3. Scope all page-type-specific CSS selectors with `body.your-page-type`
+4. Create a `styles/your-page-type.css` loaded conditionally in the eager phase
+5. Document the new type in this table
+
 ### Three-Phase Page Loading
 
 Pages are progressively loaded in three phases to maximize performance. This process begins when `loadPage` from scripts.js is called.

@@ -1,6 +1,6 @@
 # DDD-004: Home Page Post Index
 
-Status: **Proposal**
+Status: **Implemented**
 
 ## Context
 
@@ -546,4 +546,13 @@ The `description` field shown in each index entry can come from two sources: (a)
 
 ### Reviewer Notes
 
-_Human writes here during review._
+**Implemented** on 2026-03-13, branch `nefario/ddd-004-home-post-index`.
+
+**Open Question resolutions:**
+- OQ1 (entry spacing): Using `--section-spacing` (48px) as the initial value. Can be tuned with real content.
+- OQ2 (tag casing): Tags displayed as lowercase slugs, matching the content model canonical form.
+- OQ3 (tag links before DDD-007): Tags rendered as links from day one. 404s are acceptable -- the 404 page has a "Go home" link.
+- OQ4 (helix-query.yaml): Configured with standard EDS property selectors. `path` automatic.
+- OQ5 (.sr-only placement): Defined in `styles/styles.css` (eager) rather than `lazy-styles.css`, per accessibility review.
+- OQ6 (auto-block vs authored): Auto-block via `buildPostIndexBlock()` in `scripts.js`, detecting `pathname === '/'`.
+- OQ7 (description provenance): Uses `description` meta tag as authored by the writer. Not auto-extracted.

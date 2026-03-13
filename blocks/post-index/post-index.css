@@ -1,0 +1,101 @@
+/* tva */
+
+/* EDS section wrapper handles horizontal padding */
+.post-index {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+.post-index .post-entry {
+  margin-block-end: var(--section-spacing);
+}
+
+.post-index .post-entry + .post-entry {
+  border-top: 1px solid var(--color-border-subtle);
+  padding-block-start: var(--section-spacing);
+}
+
+.post-index .post-type {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: var(--body-font-size-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.post-index h2 {
+  font-size: var(--heading-font-size-m);
+  font-weight: 600;
+  color: var(--color-heading);
+  line-height: var(--line-height-heading);
+  margin-block: 0;
+}
+
+/* Title link styles — intentionally ordered before tag link rules.
+   The tag link selectors (.post-tags a:hover) reach higher specificity via
+   pseudo-classes, so title link base styles appear first in source order. */
+.post-index h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.post-index h2 a:hover {
+  text-decoration: underline;
+}
+
+.post-index h2 a:focus-visible {
+  outline: 2px solid var(--color-heading);
+  outline-offset: 2px;
+}
+
+.post-index .post-description {
+  font-size: var(--body-font-size-s);
+  color: var(--color-text);
+  line-height: var(--line-height-body);
+}
+
+.post-index .post-meta {
+  font-size: var(--body-font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.post-index .post-tags {
+  display: inline;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-index .post-tags li {
+  display: inline;
+}
+
+.post-index .post-tags li + li::before {
+  content: " \B7 ";
+  color: var(--color-text-muted);
+}
+
+.post-index .post-meta time + .post-tags::before {
+  content: " \B7 ";
+  color: var(--color-text-muted);
+}
+
+/* Tag link styles have higher specificity than h2 a due to .post-tags class.
+   Intentional: tag links are scoped to metadata, title links to headings. */
+/* stylelint-disable-next-line no-descending-specificity */
+.post-index .post-tags a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+.post-index .post-tags a:hover {
+  text-decoration: underline;
+}
+
+.post-index .post-tags a:focus-visible {
+  outline: 2px solid var(--color-heading);
+  outline-offset: 2px;
+}

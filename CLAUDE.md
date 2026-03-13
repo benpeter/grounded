@@ -69,6 +69,8 @@ Test URLs:
 - After: https://<branch>--grounded--benpeter.aem.page/<path>
 ```
 
+**Branch name in URLs**: Slashes in git branch names become dashes in EDS preview URLs. `nefario/implement-foo` → `nefario-implement-foo--grounded--benpeter.aem.page`.
+
 The `<path>` should point to a page that demonstrates the change. This is required by the EDS review process and the PR template.
 
 **Docs-only PRs** (markdown, design decisions, reports) are exempt — `.hlxignore` excludes `*.md` from EDS serving, so there's no preview page to link.

@@ -73,7 +73,6 @@ function isPostDetail() {
 /**
  * Decorates the post detail page header section.
  * Injects type badge, sr-only heading prefix, and metadata line (date, updated, tags).
- * Also makes code blocks keyboard-scrollable.
  * @param {Element} main The main element
  */
 function decoratePostDetail(main) {
@@ -164,13 +163,6 @@ function decoratePostDetail(main) {
   }
 
   h1.after(meta);
-
-  // Make code blocks keyboard-scrollable (WCAG 2.1 SC 2.1.1)
-  main.querySelectorAll('pre').forEach((pre) => {
-    pre.setAttribute('tabindex', '0');
-    pre.setAttribute('role', 'region');
-    pre.setAttribute('aria-label', 'Code example');
-  });
 }
 
 /**
@@ -256,6 +248,13 @@ async function loadLazy(doc) {
 
   const main = doc.querySelector('main');
   await loadSections(main);
+
+  // Make code blocks keyboard-scrollable after all sections are loaded
+  if (document.body.classList.contains('post-detail')) {
+    main.querySelectorAll('pre').forEach((pre) => {
+      pre.setAttribute('tabindex', '0');
+    });
+  }
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;

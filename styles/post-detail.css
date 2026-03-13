@@ -38,22 +38,6 @@ body.post-detail .post-updated {
   color: inherit;
 }
 
-body.post-detail .post-meta a:any-link {
-  color: var(--color-link);
-  text-decoration: underline;
-  text-decoration-color: var(--color-border);
-  text-underline-offset: 0.15em;
-}
-
-body.post-detail .post-meta a:hover {
-  text-decoration-color: currentcolor;
-}
-
-body.post-detail .post-meta a:focus-visible {
-  outline: 2px solid var(--color-heading);
-  outline-offset: 2px;
-}
-
 /* -----------------------------------------------------------------------
    Body typography spacing
    ----------------------------------------------------------------------- */
@@ -129,6 +113,11 @@ body.post-detail .default-content-wrapper .post-meta a:any-link {
 
 body.post-detail .default-content-wrapper .post-meta a:hover {
   text-decoration-color: currentcolor;
+}
+
+body.post-detail .default-content-wrapper .post-meta a:focus-visible {
+  outline: 2px solid var(--color-heading);
+  outline-offset: 2px;
 }
 
 /* -----------------------------------------------------------------------

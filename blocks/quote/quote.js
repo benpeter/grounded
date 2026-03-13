@@ -15,84 +15,45 @@
  */
 
 /**
- * Collect non-empty text segments from an element's subtree.
- * Recursively walks child nodes so that content inside nested elements
- * (e.g. <strong>, <em>) is captured as plain text per child node.
- *
- * @param {Element} el - Element to walk
- * @returns {string[]} Array of non-empty trimmed text strings, one per text node
- */
-function collectTextSegments(el) {
-  const segments = [];
-
-  el.childNodes.forEach((node) => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent.trim();
-      if (text) segments.push(text);
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      segments.push(...collectTextSegments(node));
-    }
-  });
-
-  return segments;
-}
-
-/**
- * Extract paragraph strings from EDS block child divs.
+ * Extract paragraph elements from EDS block child divs, preserving inline markup.
  *
  * EDS converts each table row to a <div> (row), and each cell to a
- * nested <div> (cell). A single-cell table produces one row-div with
- * one cell-div. Multi-row tables produce multiple row-divs.
- *
- * For a Quote block, each row is treated as a separate paragraph.
- * If a cell itself contains block-level children (e.g. <p> elements),
- * each child is treated as its own paragraph.
+ * nested <div> (cell). For a Quote block, each row is treated as a
+ * separate paragraph. If a cell contains block-level children (<p>),
+ * each child becomes its own paragraph.
  *
  * @param {Element} block - The .quote.block element
- * @returns {string[]} Array of paragraph strings
+ * @returns {HTMLParagraphElement[]} Array of <p> elements with preserved markup
  */
 function extractParagraphs(block) {
   const paragraphs = [];
 
-  // Each direct child is a row div
   block.querySelectorAll(':scope > div').forEach((rowDiv) => {
-    // Each child of the row is a cell div
     rowDiv.querySelectorAll(':scope > div').forEach((cellDiv) => {
-      // If the cell contains block-level children, treat each as a paragraph
       const blockChildren = cellDiv.querySelectorAll(':scope > p, :scope > div');
 
       if (blockChildren.length > 0) {
         blockChildren.forEach((child) => {
-          const text = child.textContent.trim();
-          if (text) paragraphs.push(text);
+          if (child.textContent.trim()) {
+            const p = document.createElement('p');
+            // Move child nodes to preserve inline markup (bold, italic, code, links)
+            while (child.firstChild) p.append(child.firstChild);
+            paragraphs.push(p);
+          }
         });
       } else {
-        // Plain text cell — treat whole cell as one paragraph
-        const text = collectTextSegments(cellDiv).join(' ');
-        if (text) paragraphs.push(text);
+        const text = cellDiv.textContent.trim();
+        if (text) {
+          const p = document.createElement('p');
+          // Move child nodes to preserve any inline markup
+          while (cellDiv.firstChild) p.append(cellDiv.firstChild);
+          paragraphs.push(p);
+        }
       }
     });
   });
 
   return paragraphs;
-}
-
-/**
- * Build a <blockquote> element containing one <p> per paragraph string.
- *
- * @param {string[]} paragraphs - Non-empty paragraph strings
- * @returns {HTMLElement} blockquote element
- */
-function buildBlockquote(paragraphs) {
-  const blockquote = document.createElement('blockquote');
-
-  paragraphs.forEach((text) => {
-    const p = document.createElement('p');
-    p.textContent = text;
-    blockquote.append(p);
-  });
-
-  return blockquote;
 }
 
 /**
@@ -109,7 +70,8 @@ export default async function decorate(block) {
 
   if (paragraphs.length === 0) return;
 
-  const blockquote = buildBlockquote(paragraphs);
+  const blockquote = document.createElement('blockquote');
+  paragraphs.forEach((p) => blockquote.append(p));
 
   if (isPullQuote) {
     const figure = document.createElement('figure');

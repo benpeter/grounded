@@ -172,7 +172,7 @@ main > .section {
 }
 
 main > .section:first-of-type {
-  margin-block-start: 0;
+  margin-block-start: var(--section-spacing);
 }
 
 /* Outer tier: layout max on every section container */

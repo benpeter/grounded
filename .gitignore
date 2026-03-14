@@ -12,6 +12,13 @@ helix-importer-ui
 # Claude Code local config (not committed)
 CLAUDE.local.md
 
+# Terraform state (contains secrets)
+infra/.terraform/
+infra/*.tfstate
+infra/*.tfstate.backup
+# infra/.terraform.lock.hcl is committed (provider version pinning)
+infra/*.tfvars.local
+
 # Ensure these files are tracked
 !CLAUDE.md
 !AGENTS.md

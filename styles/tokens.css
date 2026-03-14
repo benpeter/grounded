@@ -54,6 +54,14 @@
   --heading-font-size-s: 18px;
   --heading-font-size-xs: 16px;
 
+  /* Heading letter-spacing — tighten monospace at display sizes */
+  --heading-letter-spacing-xxl: -0.03em;
+  --heading-letter-spacing-xl:  -0.025em;
+  --heading-letter-spacing-l:   -0.02em;
+  --heading-letter-spacing-m:   -0.015em;
+  --heading-letter-spacing-s:   -0.01em;
+  --heading-letter-spacing-xs:  0;
+
   /* Reading rhythm */
   --line-height-body: 1.7;
   --line-height-heading: 1.25;

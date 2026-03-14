@@ -52,12 +52,34 @@ h6 {
   scroll-margin: 40px;
 }
 
-h1 { font-size: var(--heading-font-size-xxl); }
-h2 { font-size: var(--heading-font-size-xl); }
-h3 { font-size: var(--heading-font-size-l); }
-h4 { font-size: var(--heading-font-size-m); }
-h5 { font-size: var(--heading-font-size-s); }
-h6 { font-size: var(--heading-font-size-xs); }
+h1 {
+  font-size: var(--heading-font-size-xxl);
+  letter-spacing: var(--heading-letter-spacing-xxl);
+}
+
+h2 {
+  font-size: var(--heading-font-size-xl);
+  letter-spacing: var(--heading-letter-spacing-xl);
+}
+
+h3 {
+  font-size: var(--heading-font-size-l);
+  letter-spacing: var(--heading-letter-spacing-l);
+}
+
+h4 {
+  font-size: var(--heading-font-size-m);
+  letter-spacing: var(--heading-letter-spacing-m);
+}
+
+h5 {
+  font-size: var(--heading-font-size-s);
+  letter-spacing: var(--heading-letter-spacing-s);
+}
+
+h6 {
+  font-size: var(--heading-font-size-xs);
+}
 
 p,
 dl,

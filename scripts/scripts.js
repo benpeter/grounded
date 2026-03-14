@@ -11,7 +11,12 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+  getMetadata,
 } from './aem.js';
+
+import {
+  TYPE_LABELS, DATE_FORMATTER, parseDate, toIsoDate,
+} from './post-utils.js';
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -58,6 +63,109 @@ function buildPostIndexBlock(main) {
 }
 
 /**
+ * Returns true when the current page is a post detail page (/blog/{slug}).
+ * @returns {boolean}
+ */
+function isPostDetail() {
+  return window.location.pathname.startsWith('/blog/');
+}
+
+/**
+ * Decorates the post detail page header section.
+ * Injects type badge, sr-only heading prefix, and metadata line (date, updated, tags).
+ * @param {Element} main The main element
+ */
+function decoratePostDetail(main) {
+  if (!isPostDetail()) return;
+
+  document.body.classList.add('post-detail');
+
+  // Find the first default-content-wrapper (post header section)
+  const contentWrapper = main.querySelector('.default-content-wrapper');
+  if (!contentWrapper) return;
+
+  const h1 = contentWrapper.querySelector('h1');
+  if (!h1) return;
+
+  // Read post metadata
+  const type = getMetadata('type');
+  const date = getMetadata('date');
+  const updated = getMetadata('updated');
+  const tags = getMetadata('tags');
+
+  const typeLabel = TYPE_LABELS[type] || null;
+
+  // Type badge: visible, aria-hidden — sr-only prefix in h1 carries context for AT
+  if (typeLabel) {
+    const badge = document.createElement('p');
+    badge.className = 'post-type';
+    badge.setAttribute('aria-hidden', 'true');
+    badge.textContent = typeLabel;
+    h1.before(badge);
+
+    // sr-only prefix inside h1 for screen reader heading navigation
+    const srPrefix = document.createElement('span');
+    srPrefix.className = 'sr-only';
+    srPrefix.textContent = `${typeLabel}: `;
+    h1.prepend(srPrefix);
+  }
+
+  h1.id = 'post-title';
+
+  // Post metadata line: date, updated, tags
+  const meta = document.createElement('p');
+  meta.className = 'post-meta';
+
+  const dateMs = parseDate(date);
+  if (dateMs) {
+    const time = document.createElement('time');
+    time.setAttribute('datetime', toIsoDate(dateMs));
+    time.textContent = DATE_FORMATTER.format(new Date(dateMs));
+    meta.append(time);
+  }
+
+  // Updated date: only inject element when metadata value is present
+  const updatedMs = parseDate(updated);
+  if (updatedMs) {
+    const updatedSpan = document.createElement('span');
+    updatedSpan.className = 'post-updated';
+
+    const updatedText = document.createTextNode(' \u00b7 Updated ');
+    const updatedTime = document.createElement('time');
+    updatedTime.setAttribute('datetime', toIsoDate(updatedMs));
+    updatedTime.textContent = DATE_FORMATTER.format(new Date(updatedMs));
+
+    updatedSpan.append(updatedText, updatedTime);
+    meta.append(updatedSpan);
+  }
+
+  // Tags: comma-separated slugs from metadata
+  if (tags) {
+    const slugs = tags
+      .split(',')
+      .map((t) => t.trim())
+      .filter((t) => /^[a-z0-9-]+$/.test(t));
+
+    if (slugs.length > 0) {
+      const tagsSpan = document.createElement('span');
+      tagsSpan.className = 'post-tags-inline';
+
+      slugs.forEach((slug) => {
+        const sep = document.createTextNode(' \u00b7 ');
+        const a = document.createElement('a');
+        a.href = `/tags/${slug}`;
+        a.textContent = slug;
+        tagsSpan.append(sep, a);
+      });
+
+      meta.append(tagsSpan);
+    }
+  }
+
+  h1.after(meta);
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -83,6 +191,7 @@ function buildAutoBlocks(main) {
 
     buildHeroBlock(main);
     buildPostIndexBlock(main);
+    decoratePostDetail(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -113,6 +222,9 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    if (document.body.classList.contains('post-detail')) {
+      await loadCSS(`${window.hlx.codeBasePath}/styles/post-detail.css`);
+    }
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
@@ -136,6 +248,13 @@ async function loadLazy(doc) {
 
   const main = doc.querySelector('main');
   await loadSections(main);
+
+  // Make code blocks keyboard-scrollable after all sections are loaded
+  if (document.body.classList.contains('post-detail')) {
+    main.querySelectorAll('pre').forEach((pre) => {
+      pre.setAttribute('tabindex', '0');
+    });
+  }
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;

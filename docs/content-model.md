@@ -50,6 +50,16 @@ Tags only. Flat namespace. Lowercase, hyphenated.
 - Practice: `ai-workflow`, `seo`, `geo`, `performance`, `authoring`, `content-modeling`, `devops`
 - Tool: `claude`, `claude-code`, `obsidian`, `mcp`, `github`
 
+## Authoring Notes
+
+### Blockquotes
+
+Blockquotes are authored as the **Quote block** (a table in Google Docs with a single cell containing the quote text). Standard Markdown `> text` syntax is not natively supported in EDS authoring.
+
+Two variants:
+- **Standard blockquote**: Quote block without additional classes. Renders with a subtle left border.
+- **Pull-quote**: Quote block with section metadata class `pull-quote`. Renders with gold accent border, editorial font, larger text. Pull-quote content must appear verbatim elsewhere in the post body — it is `aria-hidden` and screen readers skip it entirely. If the content is unique, use a standard blockquote instead.
+
 ## Deliberately Not Here
 
 - **Categories** — tags are enough. YAGNI.

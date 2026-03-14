@@ -1,0 +1,214 @@
+/*
+ * Post Detail — scoped styles for blog post reading pages.
+ * All selectors prefixed with body.post-detail.
+ * Loaded conditionally on /blog/* paths only.
+ */
+
+/* tva */
+
+/* -----------------------------------------------------------------------
+   Post header
+   ----------------------------------------------------------------------- */
+
+body.post-detail .post-type {
+  font-family: var(--font-heading);
+  font-size: var(--body-font-size-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin: 0 0 0.25em;
+}
+
+body.post-detail h1 {
+  margin: 0;
+  font-weight: 600;
+}
+
+body.post-detail .post-meta {
+  font-size: var(--body-font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin-top: 0.75em;
+  margin-bottom: 2em;
+}
+
+body.post-detail .post-meta time,
+body.post-detail .post-updated {
+  color: inherit;
+}
+
+/* -----------------------------------------------------------------------
+   Body typography spacing
+   ----------------------------------------------------------------------- */
+
+body.post-detail .default-content-wrapper h2 {
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+body.post-detail .default-content-wrapper h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+/* Adjacent heading collapse: h3 immediately after h2 */
+body.post-detail .default-content-wrapper h2 + h3 {
+  margin-top: 0.25em;
+}
+
+body.post-detail .default-content-wrapper p {
+  margin-top: var(--space-paragraph, 1em);
+  margin-bottom: 0;
+}
+
+body.post-detail .default-content-wrapper pre {
+  margin-block: var(--space-element, 1.5em);
+  border-radius: 0;
+}
+
+body.post-detail .default-content-wrapper ul,
+body.post-detail .default-content-wrapper ol {
+  margin-block: var(--space-paragraph, 1em);
+}
+
+body.post-detail .default-content-wrapper li {
+  margin-bottom: 0.35em;
+}
+
+body.post-detail .default-content-wrapper li:last-child {
+  margin-bottom: 0;
+}
+
+body.post-detail .default-content-wrapper hr {
+  margin-block: 2em;
+  border: none;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+body.post-detail .default-content-wrapper table {
+  margin-block: var(--space-element, 1.5em);
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* -----------------------------------------------------------------------
+   Body links — underline by default (WCAG 1.4.1), remove on hover
+   ----------------------------------------------------------------------- */
+
+body.post-detail .default-content-wrapper a:any-link {
+  text-decoration: underline;
+}
+
+body.post-detail .default-content-wrapper a:hover {
+  text-decoration: none;
+}
+
+/* Tag links inside .post-meta keep the subtle underline override */
+body.post-detail .default-content-wrapper .post-meta a:any-link {
+  text-decoration: underline;
+  text-decoration-color: var(--color-border);
+  text-underline-offset: 0.15em;
+}
+
+body.post-detail .default-content-wrapper .post-meta a:hover {
+  text-decoration-color: currentcolor;
+}
+
+body.post-detail .default-content-wrapper .post-meta a:focus-visible {
+  outline: 2px solid var(--color-heading);
+  outline-offset: 2px;
+}
+
+/* -----------------------------------------------------------------------
+   Inline code
+   ----------------------------------------------------------------------- */
+
+body.post-detail code:not(pre code) {
+  font-family: var(--font-code);
+  font-size: 0.9em;
+  background-color: var(--color-background-soft);
+  padding-inline: 2px;
+  border-radius: 0;
+}
+
+/* -----------------------------------------------------------------------
+   decorateButtons() override — reset .button styles to plain inline links
+   ----------------------------------------------------------------------- */
+
+body.post-detail .default-content-wrapper a.button:any-link {
+  display: inline;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  font-weight: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  text-decoration: underline;
+  background-color: transparent;
+  color: var(--color-link);
+  cursor: pointer;
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+}
+
+body.post-detail .default-content-wrapper a.button:hover {
+  background-color: transparent;
+  color: var(--color-link-hover);
+  text-decoration: none;
+}
+
+body.post-detail .default-content-wrapper .button-container {
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+}
+
+/* -----------------------------------------------------------------------
+   Table styling
+   ----------------------------------------------------------------------- */
+
+body.post-detail .default-content-wrapper th {
+  font-size: var(--body-font-size-s);
+  font-weight: 600;
+  color: var(--color-heading);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--color-border);
+  line-height: var(--line-height-heading);
+}
+
+body.post-detail .default-content-wrapper td {
+  font-size: var(--body-font-size-s);
+  color: var(--color-text);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  line-height: var(--line-height-body);
+}
+
+/* -----------------------------------------------------------------------
+   Pre focus ring (keyboard scrolling)
+   ----------------------------------------------------------------------- */
+
+body.post-detail pre:focus-visible {
+  outline: 2px solid var(--color-heading);
+  outline-offset: 2px;
+}
+
+/* -----------------------------------------------------------------------
+   Quote block spacing and sizing in post context
+   ----------------------------------------------------------------------- */
+
+body.post-detail .quote-wrapper {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: 0;
+  margin-block: var(--space-element, 1.5em);
+}
+
+/* Pull-quote gets more generous breathing room */
+body.post-detail .quote-wrapper:has(.pull-quote) {
+  margin-block: 2em;
+}

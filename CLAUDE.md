@@ -59,6 +59,20 @@ Do not build these unless explicitly asked:
 - No external dependencies beyond Google Fonts (Source Sans 3, Source Code Pro, Source Serif 4)
 - Follow EDS three-phase loading: eager → lazy → delayed
 
+## Content Source
+
+Content is authored on **da.live** (Document Authoring for AEM).
+
+- **Editor**: `https://da.live/edit#/benpeter/grounded/<path>`
+- **Admin API**: `https://admin.da.live/source/benpeter/grounded/<path>`
+- **Auth**: da.live uses GitHub-based auth (IMS tokens via browser). API keys cannot create, preview, or publish da.live content. Use the browser editor or Sidekick.
+
+To create a test page for a PR:
+1. Open `https://da.live/#/benpeter/grounded/blog` in a browser
+2. Create a new document with the desired slug
+3. Author content using da.live's editor (blocks = tables, metadata = Metadata table at bottom)
+4. Preview via Sidekick to make it available on the `.aem.page` preview URL
+
 ## Pull Requests
 
 Every PR that changes code served by EDS (JS, CSS, HTML, blocks) **must** include preview links in the description:

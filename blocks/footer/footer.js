@@ -9,7 +9,7 @@ export default function decorate(block) {
   const author = document.createElement('a');
   author.href = 'https://www.linkedin.com/in/benpeter/';
   author.target = '_blank';
-  author.rel = 'noopener';
+  author.rel = 'noopener noreferrer';
   author.setAttribute('aria-label', 'Ben Peter on LinkedIn (opens in new tab)');
   author.textContent = 'Ben Peter';
 
